@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body id="body">
+    <button id='btn' onclick=getQuestionsOfAnimal()>Questions on Animals</button>
+    
+</body>
+    <script>
+      const APIUrl = 'https://opentdb.com/api.php?amount=5&category=27&difficulty=easy&type=multiple';
+
+      const getQuestionsOfAnimal= async () => {
+        try {
+          const response = await fetch(`${APIUrl}`, {
+            method: 'GET',
+          });
+  
+          const data = await response.json();
+  
+          const questions = data.results
+          console.log(questions)
+          questions.forEach((ele)=>{
+            const question = document.createElement("h3")
+            question.innerText = ele.question
+            console.log(ele.question)
+            const answer = document.createElement("p")
+          
+            const correctAnswer = ele.correct_answer
+            answer.innerText=correctAnswer
+            answer.style.color = "blue";
+            question.appendChild(answer)
+            document.getElementById('body').appendChild(question);
+          })
+        } catch (err) {
+          console.error('Error in getQuestionsOfAnimal', err);
+        }
+      }
+
+
+    </script>
+</html>
