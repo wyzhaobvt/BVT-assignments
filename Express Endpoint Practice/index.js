@@ -78,8 +78,8 @@ app.post('/car', async function(req, res) {
     const { make, model, year } = req.body;
   
     const query = await req.db.query(
-      `INSERT INTO car (make, model, year) 
-       VALUES (:make, :model, :year)`,
+      `INSERT INTO car (make, model, year,deleted_flag) 
+       VALUES (:make, :model, :year,0)`,
       {
         make,
         model,
@@ -97,8 +97,9 @@ app.delete('/car/:id', async function(req,res) {
   try {
     const id=req.params.id
     const del = await req.db.query(
-      `delete from car
-      where id=?`,[id]
+      `update car
+      set deleted_flag = 1
+      where id =?`,[id]
     )
     console.log('req.params /car/:id', req.params)
     res.json('success')
@@ -112,7 +113,7 @@ app.put('/car', async function(req,res) {
   
     const data = await req.db.query(`
     update car 
-    set year = 2023
+    set deleted_flag = 1
     where make='toyota'
     `)
     res.status(201).send(data)
